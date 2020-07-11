@@ -56,7 +56,7 @@ Widget buildTextField(String label, String prefix, TextEditingController control
     ),
     controller: controller,
     onChanged: handler,
-    keyboardType: TextInputType.number,
+    keyboardType: TextInputType.numberWithOptions(decimal: true),
   );
 }
 
@@ -100,19 +100,37 @@ class _HomeState extends State<Home> {
                 final dollarController = TextEditingController();
                 final euroController = TextEditingController();
 
+                void _clearAll() {
+                  realController.text = '';
+                  dollarController.text = '';
+                  euroController.text = '';
+                }
+
                 void _realChanged(String text){
+                  if(text.isEmpty) {
+                    _clearAll();
+                    return;
+                  }
                   var real = double.parse(text);
                   dollarController.text = (real / dollar).toStringAsFixed(2);
                   euroController.text = (real / euro).toStringAsFixed(2);
                 }
 
                 void _dollarChanged(String text){
+                  if(text.isEmpty) {
+                    _clearAll();
+                    return;
+                  }
                   var dollar = double.parse(text);
                   realController.text = (dollar * this.dollar).toStringAsFixed(2);
                   euroController.text = ((dollar * this.dollar) / euro).toStringAsFixed(2);
                 }
 
                 void _euroChanged(String text){
+                  if(text.isEmpty) {
+                    _clearAll();
+                    return;
+                  }
                   var euro = double.parse(text);
                   realController.text = (euro * this.euro).toStringAsFixed(2);
                   dollarController.text = ((euro * this.euro) / dollar).toStringAsFixed(2);
